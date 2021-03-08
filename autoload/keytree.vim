@@ -6,14 +6,42 @@ endif
 let g:keytree_loaded = 1
 "}}}1
 
+" Sort the keys alphabetically, upper case after lower {{{1
+function! keytree#SortKeys(node) abort
+	let l:keys = []
+
+	for key in keys(a:node['children'])
+		let l:keys = add(l:keys, tolower(key))
+	endfor
+
+	let l:keys = sort(l:keys)
+	let l:i    = 1
+
+	while l:i < len(keys)
+		if l:keys[i] == l:keys[i-1]
+			let l:keys[i] = toupper(l:keys[i])
+		endif
+
+		let l:i += 1
+	endwhile
+
+	return l:keys
+endfunction
+" }}}1
+
 " Display a node's information (name and children) {{{1
 function! keytree#DisplayNode(node) abort
-	echo toupper(a:node['name'])
+	echo a:node['name']
 
 	if has_key(a:node, 'children')
-		for key in keys(a:node['children'])
-			echo '  - [' . toupper(key) . '] : ' . get(a:node['children'], key)['name']
-		endfor
+		let l:keys = keytree#SortKeys(a:node)
+
+		let l:i = 0
+
+		while l:i < len(keys)
+			echo '  - [' . keys[i] . '] : ' . get(a:node['children'], keys[i])['name']
+			let l:i += 1
+		endwhile
 	endif
 
 	echo "\n"
