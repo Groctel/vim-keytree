@@ -1,21 +1,39 @@
 " Default tree nodes
 
 " Buffer nodes {{{1
+let s:child_b_a = {
+	\ 'name'        : 'Add',
+	\ 'action-args' : ':badd '
+\}
+
 let s:child_b_d = {
 	\ 'name'   : 'Delete',
 	\ 'action' : ':bdel'
 \}
 
-let s:child_b_o = {
-	\ 'name'        : 'Open',
-	\ 'action-args' : ':badd '
+let s:child_b_n = {
+	\ 'name'   : 'Next',
+	\ 'action' : ':bnext'
+\}
+
+let s:child_b_p = {
+	\ 'name'   : 'Previous',
+	\ 'action' : ':bprev'
+\}
+
+let s:child_b_w = {
+	\ 'name'   : 'Write',
+	\ 'action' : ':write'
 \}
 
 let s:child_b = {
 	\ 'name'     : 'Buffer',
 	\ 'children' : {
+		\ 'a' : s:child_b_a,
 		\ 'd' : s:child_b_d,
-		\ 'o' : s:child_b_o
+		\ 'n' : s:child_b_n,
+		\ 'p' : s:child_b_p,
+		\ 'w' : s:child_b_w
 	\}
 \}
 " }}}1
@@ -54,6 +72,26 @@ let s:child_F = {
 \}
 " }}}1
 
+" Help nodes {{{1
+let s:child_h_h = {
+	\ 'name'        : 'Horizontal',
+	\ 'action-args' : ':help '
+\}
+
+let s:child_h_v = {
+	\ 'name'        : 'Vertical',
+	\ 'action-args' : ':vert help '
+\}
+
+let s:child_h = {
+	\ 'name'     : 'Help',
+	\ 'children' : {
+		\ 'h' : s:child_h_h,
+		\ 'v' : s:child_h_v
+	\}
+\}
+" }}}1
+
 " Quit vim nodes {{{1
 let s:child_q_f = {
 	\ 'name'   : 'Force quit vim',
@@ -86,10 +124,16 @@ let s:child_w_q = {
 	\ 'action' : ':quit'
 \}
 
+let s:child_w_w = {
+	\ 'name'   : 'Next in sequence',
+	\ 'action' : ':normal ^W^W'
+\}
+
 let s:child_w = {
 	\ 'name'     : 'Window',
 	\ 'children' : {
-		\ 'q' : s:child_w_q
+		\ 'q' : s:child_w_q,
+		\ 'w' : s:child_w_w
 	\}
 \}
 " }}}1
@@ -100,6 +144,7 @@ let g:keytree#treenodes#root = {
 		\ 'b' : s:child_b,
 		\ 'f' : s:child_f,
 		\ 'F' : s:child_F,
+		\ 'h' : s:child_h,
 		\ 'q' : s:child_q,
 		\ 'w' : s:child_w
 	\}

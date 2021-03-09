@@ -27,6 +27,6 @@ nmap <Space> :KTBrowse<CR>
 - [ ] Document the tree structure.
 - [ ] Set global variables for keys.
 - [ ] Tree editing interface.
-- [ ] Redraw output for every node.
-- [ ] Draw output in a proper window.
+- [x] Redraw output for every node.
+- [x] Draw output in a proper window.
 - [ ] Colored output.
