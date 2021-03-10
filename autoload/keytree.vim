@@ -26,9 +26,11 @@ function! keytree#Browse () abort
 
 	while continue
 		let l:kt_window   = keytree#window#Show(l:kt_window, l:current_node)
+		redraw
 		let l:pressed_key = nr2char(getchar())
 
 		if l:pressed_key == "\<Esc>"
+			call keytree#window#Kill(l:kt_window)
 			let l:continue = v:false
 		else
 			if l:pressed_key == "-" && !empty(l:node_history)

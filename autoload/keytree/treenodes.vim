@@ -139,7 +139,7 @@ let s:child_w = {
 " }}}1
 
 let g:keytree#treenodes#root = {
-	\ 'name'     : 'root',
+	\ 'name'     : 'vim-Keytree: Press a key to continue',
 	\ 'children' : {
 		\ 'b' : s:child_b,
 		\ 'f' : s:child_f,
