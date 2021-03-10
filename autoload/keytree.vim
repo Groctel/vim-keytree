@@ -6,7 +6,31 @@ endif
 let g:keytree_loaded = 1
 "}}}1
 
-" Run a node's action {{{1
+" EXIT : Kill the last window and signal the loop to stop {{{1
+function! keytree#Exit (tree_info) abort
+	let l:tree_info = a:tree_info
+
+	call keytree#window#Kill(l:tree_info['kt_window'])
+	let l:tree_info['continue'] = v:false
+
+	return l:tree_info
+endfunction
+" }}}1
+
+" REWIND : Move to the node's parent (last history item) {{{1
+function! keytree#Rewind (tree_info) abort
+	let l:tree_info = a:tree_info
+
+	if !empty(l:tree_info['node_history'])
+		let l:tree_info['current_node'] = l:tree_info['node_history'][-1]
+		call remove(l:tree_info['node_history'], -1)
+	endif
+
+	return l:tree_info
+endfunction
+" }}}1
+
+" RUN NODE : Execute a node's action {{{1
 function! keytree#RunNode (node) abort
 	if has_key(a:node, 'action')
 		exec a:node['action']
@@ -17,39 +41,59 @@ function! keytree#RunNode (node) abort
 endfunction
 " }}}1
 
-" Browse the key tree {{{1
-function! keytree#Browse () abort
-	let l:continue     = v:true
-	let l:current_node = g:keytree#treenodes#root
-	let l:node_history = []
-	let l:kt_window    = {}
+" ADVANCE : Move to the next child or run it (if it exists) {{{1
+function! keytree#Advance (tree_info, pressed_key) abort
+	let l:tree_info = a:tree_info
 
-	while continue
-		let l:kt_window   = keytree#window#Show(l:kt_window, l:current_node)
+	let l:children = get(tree_info['current_node'], 'children')
+
+	if has_key(l:children, a:pressed_key)
+		let l:next_child = get(l:children, a:pressed_key)
+
+		if has_key(l:next_child, 'children')
+			let l:node_history = add(
+				\ l:tree_info['node_history'],
+				\ l:tree_info['current_node']
+			\)
+			let l:tree_info['current_node'] = l:next_child
+
+		else
+			call keytree#window#Kill(l:tree_info['kt_window'])
+			call keytree#RunNode(l:next_child)
+			let l:tree_info['continue'] = v:false
+		endif
+	endif
+
+	return l:tree_info
+endfunction
+" }}}1
+
+" BROWSE : Main loop to browse the tree with the user's input {{{1
+function! keytree#Browse () abort
+	let l:tree_info  = {
+		\ 'current_node' : g:keytree#treenodes#root,
+		\ 'node_history' : [],
+		\ 'kt_window'    : {},
+		\ 'continue'     : v:true
+	\}
+
+	while tree_info['continue']
+		let l:tree_info['kt_window'] = keytree#window#DisplayNode(
+			\ l:tree_info['kt_window'],
+			\ l:tree_info['current_node']
+		\)
 		redraw
+
 		let l:pressed_key = nr2char(getchar())
 
 		if l:pressed_key == "\<Esc>"
-			call keytree#window#Kill(l:kt_window)
-			let l:continue = v:false
-		else
-			if l:pressed_key == "-" && !empty(l:node_history)
-				let l:current_node = l:node_history[-1]
-				call remove(l:node_history, -1)
-			else
-				if has_key(current_node['children'], l:pressed_key)
-					let l:next_child = get(l:current_node['children'], l:pressed_key)
+			let l:tree_info = keytree#Exit(l:tree_info)
 
-					if has_key(next_child, 'children')
-						let l:node_history = add(l:node_history, l:current_node)
-						let l:current_node = l:next_child
-					else
-						call keytree#window#Kill(l:kt_window)
-						call keytree#RunNode(l:next_child)
-						let l:continue = v:false
-					endif
-				endif
-			endif
+		elseif l:pressed_key == "-"
+			let l:tree_info = keytree#Rewind(l:tree_info)
+
+		else
+			let l:tree_info = keytree#Advance(l:tree_info, l:pressed_key)
 		endif
 	endwhile
 endfunction

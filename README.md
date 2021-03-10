@@ -22,11 +22,17 @@ Ideally, you should map a key to access the tree as quick as possible:
 nmap <Space> :KTBrowse<CR>
 ```
 
+## Is there something preventing me from creating a full graph, cicles and all?
+
+Nope.
+Feel free to experiment!
+
 ## TODO list
 
 - [ ] Document the tree structure.
 - [ ] Set global variables for keys.
 - [ ] Tree editing interface.
+- [ ] Colored output.
+
 - [x] Redraw output for every node.
 - [x] Draw output in a proper window.
-- [ ] Colored output.
