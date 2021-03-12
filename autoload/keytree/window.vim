@@ -1,14 +1,7 @@
-" KILL : Close a window and delete its associated buffer {{{1
-function! keytree#window#Kill (kt_window) abort
-	call nvim_win_close(a:kt_window['id'], v:true)
-	call nvim_buf_delete(a:kt_window['buffer'], {})
-endfunction
-" }}}1
-
 " PRINT KEYS : Show a node's children and keys inside the window {{{1
-function! keytree#window#PrintKeys (kt_window, node) abort
+function! keytree#window#_PrintKeys (kt_window, node) abort
 	let l:row = 2
-	let l:children = keytree#window#SortKeys(a:node['children'])
+	let l:children = keytree#window#_SortKeys(a:node['children'])
 
 	for key in l:children
 		let l:line = '[' . key . '] ' . get(a:node['children'], key)['name']
@@ -28,7 +21,7 @@ endfunction
 " }}}1
 
 " PRINT TITLE : Print the node's name at the top of the window {{{1
-function! keytree#window#PrintTitle (kt_window, node) abort
+function! keytree#window#_PrintTitle (kt_window, node) abort
 	call nvim_buf_set_text(
 		\ a:kt_window['buffer'],
 		\ 0,
@@ -41,7 +34,7 @@ endfunction
 " }}}1
 
 " SORT KEYS : Sort the keys alphabetically, upper case after lower {{{1
-function! keytree#window#SortKeys (node) abort
+function! keytree#window#_SortKeys (node) abort
 	let l:keys = []
 
 	for key in keys(a:node)
@@ -64,7 +57,7 @@ endfunction
 " }}}1
 
 " SPAWN : Create and open the window and draw its borders {{{1
-function! keytree#window#Spawn (node) abort
+function! keytree#window#_Spawn (node) abort
 	let l:kt_window  = {}
 	let l:ui         = nvim_list_uis()[0]
 	let l:win_width  = l:ui.width
@@ -103,12 +96,19 @@ function! keytree#window#Spawn (node) abort
 endfunction
 " }}}1
 
+" KILL : Close a window and delete its associated buffer {{{1
+function! keytree#window#Kill (kt_window) abort
+	call nvim_win_close(a:kt_window['id'], v:true)
+	call nvim_buf_delete(a:kt_window['buffer'], {})
+endfunction
+" }}}1
+
 " DISPLAY NODE : Show a node's information (name and children) in a window {{{1
 function! keytree#window#DisplayNode (previous_kt_window, node) abort
-	let l:kt_window = keytree#window#Spawn(a:node)
+	let l:kt_window = keytree#window#_Spawn(a:node)
 
-	call keytree#window#PrintTitle(l:kt_window, a:node)
-	call keytree#window#PrintKeys(l:kt_window, a:node)
+	call keytree#window#_PrintTitle(l:kt_window, a:node)
+	call keytree#window#_PrintKeys(l:kt_window, a:node)
 
 	if !empty(a:previous_kt_window)
 		call keytree#window#Kill(a:previous_kt_window)

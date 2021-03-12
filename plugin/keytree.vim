@@ -1,1 +1,1 @@
-command! KTBrowse call keytree#Browse()
+command! Keytree call keytree#Main()
