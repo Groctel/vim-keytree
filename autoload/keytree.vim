@@ -32,11 +32,11 @@ endfunction
 
 " RUN NODE : Execute a node's action {{{1
 function! keytree#_RunNode (node) abort
-	if has_key(a:node, 'action')
-		exec a:node['action']
+	if has_key(a:node, 'exec')
+		exec a:node['exec']
 
-	elseif has_key(a:node, 'action-args')
-		call feedkeys(a:node['action-args'])
+	elseif has_key(a:node, 'keyfeed')
+		call feedkeys(a:node['keyfeed'])
 	endif
 endfunction
 " }}}1

@@ -1,0 +1,185 @@
+*keytree.txt*	keytree	Last change: 12/03/2021
+
+VIM-KEYTREE - TABLE OF CONTENTS                                    *keytree-toc*
+==============================================================================
+
+   Keytree
+      Installation
+      Browsing the tree
+      Understanding nodes
+      Editing the tree
+      Licence
+
+VIM-KEYTREE                                                            *keytree*
+==============================================================================
+
+A universe of actions at your fingertips!
+
+Do you know how {SpaceVim}{1} lets you press <Space> to make a menu appear with
+lots of options at your disposition to navigate around? This plugin emulates
+this behaviour while making it extensible and simple to use.
+
+                                                     {1} https://spacevim.org/
+
+
+INSTALLATION                                              *keytree-installation*
+==============================================================================
+
+Use the plugin manager of your choice. I like {vim-plug}{2}
+
+   `Plug 'Groctel/vim-keytree'`
+
+This plugin uses Neovim's window api, so the plugin doesn't work with Vim.
+
+                                      {2} https://github.com/junegunn/vim-plug
+
+
+BROWSING THE TREE                                    *keytree-browsing-the-tree*
+==============================================================================
+                                            *:Keytree*  *g:keytree#treenodes#root*
+Start browsing the tree with :Keytree. Press the shown keys to advance through
+the tree and run an action. Press |-| to return to the previos node and <Esc>
+to exit without running any actions.
+
+Ideally, you should map a key to access the tree as quick as possible:
+
+   `nnoremap <Space> :Keytree<CR>`
+
+A global reference to the tree's root is saved at `g:keytree#treenodes#root`.
+
+
+UNDERSTANDING NODES                                *keytree-understanding-nodes*
+==============================================================================
+
+          NOTE: Dictionaries and keys.
+          In VimL terminology, dictionaries contain keys with values. However,
+          I've decided to call these keys 'properties' in this manual because
+          some of the keys contain the value of the physical keys the user has
+          to press to traverse the directory.
+
+Nodes are dictionaries that contain some information and a subdictionary
+called 'children' which constains references to other nodes. For example,
+the |Help| node has the following structure:
+
+   `let s:child_h = {`
+      `\ 'name'     : 'Help',`
+      `\ 'children' : {`
+         `\ 'h' : s:child_h_h,`
+         `\ 'v' : s:child_h_v`
+      `\}`
+   `\}`
+
+Both |s:child_h_h| and |s_child_h_v| are other nodes defined before |s:child_dh|.
+When the user presses |h|, they will arrive at the |Help| node. From there, they
+can press |h| or |v| to navigate to any of its two children.
+
+It is imperative that every node has a 'name' property, because that is what
+the plugin will read when printing its information in the floating window.
+There are two types of nodes:
+
+   - Nodes with a 'children' property: They group nodes into categories.
+   - Nodes without a 'children' property: They contain actions to be run.
+
+When a node has no 'children' (it is a leaf), it must contain an action to be
+run. Actions are either executable commands or a sequnce of keys Vim simulates
+as being pressed by the user. For example:
+
+   - `'exec' : ':wq'` will execute |:wq| to write-quit Vim.
+   - `'keyfeed' : ':badd '` will add |:badd| to the command line and let you
+     write the remaining arguments.
+
+These two are valid leafs nodes:
+
+   `let s:child_q_f = {`
+      `\ 'name' : 'Force quit Vim',`
+      `\ 'exec' : ':qa!'`
+   `\}`
+
+   `let s:child_h_v = {`
+      `\ 'name'    : 'Vertical',`
+      `\ 'keyfeed' : ':vert help '`
+   `\}`
+
+To summarise, these are the properties accepted by the nodes:
+
+  | |PROPERTY| | |NODE| |TYPE| | |DESCRIPTION|                                     |
+  | children | Branches  | Keys the user has to press to move to deeper    |
+  |          |           | nodes. These nodes are the keys' values.        |
+  | exec     | Leaves    | Action to be executed completely in Ex mode.    |
+  | keyfeed  | Leaves    | Sequence of keys to let Vim press for the user. |
+  | name     | All       | Extremely short description of the node.        |
+
+
+EDITING THE TREE                                      *keytree-editing-the-tree*
+==============================================================================
+           *g:keytree_empty_nodes* *keytree#api#AddKey()*  *keytree#api#RemoveKey()*
+
+The default tree contains many nodes submitted by the author or contributors.
+If you want to start with an empty tree, set the following variable:
+
+   `let g:keytree_empty_nodes = 1`
+
+This will set the root node to this:
+
+   `let g:keytree#treenodes#root = {`
+      `\ 'name'     : 'vim-Keytree: Press a key to continue',`
+      `\ 'children' : {}`
+   `\}`
+
+Keytree also provides a simple API to help you edit the tree:
+
+   `function! keytree#api#AddKey (key, node, path) abort`
+   `function! keytree#api#RemoveKey (key, path) abort`
+
+These functions accept the following arguments:
+
+- |key|:  The key to be added to the tree (eg. `'d'` for |delete|).
+- |node|: The node (a dict) to add to the tree (eg. + `:child_n_d`).
+- |path|: The path to the parent node from the root (eg `['j', 'c']` or `[]` for
+        root).
+
+As an example, consider the following tree structure:
+
+   `root`
+   `|---b`
+       `|---a`
+       `|---d`
+       `|---n`
+   `|---f`
+       `|---o`
+           `|---k`
+   `|---q`
+       `|---q`
+
+These are valid calls:
+
+   - Add a 'p' node to the root of the tree
+     `call keytree#api#AddKey ('p', s:child_p, [])`
+
+   - Add a 'j' node after to the 'fo' node
+     `call keytree#api#AddKey ('j', s:child_f_o_j, ['f', 'o'])`
+
+   - Remove the 'b' subtree entirely
+     `call keytree#api#RemoveKey ('b', [])`
+
+   - Remove the 'q' leaf node from the 'q' node
+     `call keytree#api#RemoveKey ('q', ['q'])`
+
+You can, of course, create your own tree and just |AddKey| its root to the global
+tree. Invalid calls will return an error if one of the nodes in |path| (even the
+last one) is missing the 'children' dict.
+
+|Is| |there| |something| |preventing| |me| |from| |creating| |a| |full| |graph,| |cicles| |and| |all?|
+
+Nope. Feel free to experiment! With a little skill you can use Keytree as a
+choose your own adventure text game engine! (Please keep in mind that being
+able to doesn't translate to being required to).
+
+LICENCE                                                        *keytree-licence*
+==============================================================================
+
+GPL-2.0
+
+
+==============================================================================
+vim:tw=78:sw=2:ts=2:ft=help:norl:nowrap:

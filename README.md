@@ -24,7 +24,7 @@ Ideally, you should map a key to access the tree as quick as possible:
 nnoremap <Space> :Keytree<CR>
 ```
 
-A global reference to the tree's root node is saved at `g:keytree#api#RemoveKey`.
+A global reference to the tree's root node is saved at `g:keytree#treenodes#root`.
 
 ### Editing the tree
 
@@ -79,13 +79,15 @@ Invalid calls will return an error if one of the nodes in `path` (even the last 
 
 Nope.
 Feel free to experiment!
+With a little skill you can use Keytree as a choose your own adventure text game engine!
+(Please keep in mind that being able to doesn't translate to being required to).
 
 ## TODO list
 
-- [ ] Document the tree structure.
 - [ ] Set global variables for keys.
 - [ ] Colored output.
 
+- [x] Document the tree structure.
 - [x] Tree editing interface.
 - [x] Redraw output for every node.
 - [x] Draw output in a proper window.

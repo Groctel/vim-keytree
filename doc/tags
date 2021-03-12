@@ -1,0 +1,12 @@
+:Keytree	keytree.txt	/*:Keytree*
+g:keytree#treenodes#root	keytree.txt	/*g:keytree#treenodes#root*
+g:keytree_empty_nodes	keytree.txt	/*g:keytree_empty_nodes*
+keytree#api#AddKey()	keytree.txt	/*keytree#api#AddKey()*
+keytree#api#RemoveKey()	keytree.txt	/*keytree#api#RemoveKey()*
+keytree-browsing-the-tree	keytree.txt	/*keytree-browsing-the-tree*
+keytree-editing-the-tree	keytree.txt	/*keytree-editing-the-tree*
+keytree-installation	keytree.txt	/*keytree-installation*
+keytree-licence	keytree.txt	/*keytree-licence*
+keytree-toc	keytree.txt	/*keytree-toc*
+keytree-understanding-nodes	keytree.txt	/*keytree-understanding-nodes*
+keytree.txt	keytree.txt	/*keytree.txt*

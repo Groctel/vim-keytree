@@ -11,28 +11,28 @@ else
 
 	" Buffer nodes {{{1
 	let s:child_b_a = {
-		\ 'name'        : 'Add',
-		\ 'action-args' : ':badd '
+		\ 'name'    : 'Add',
+		\ 'keyfeed' : ':badd '
 	\}
 
 	let s:child_b_d = {
-		\ 'name'   : 'Delete',
-		\ 'action' : ':bdel'
+		\ 'name' : 'Delete',
+		\ 'exec' : ':bdel'
 	\}
 
 	let s:child_b_n = {
-		\ 'name'   : 'Next',
-		\ 'action' : ':bnext'
+		\ 'name' : 'Next',
+		\ 'exec' : ':bnext'
 	\}
 
 	let s:child_b_p = {
-		\ 'name'   : 'Previous',
-		\ 'action' : ':bprev'
+		\ 'name' : 'Previous',
+		\ 'exec' : ':bprev'
 	\}
 
 	let s:child_b_w = {
-		\ 'name'   : 'Write',
-		\ 'action' : ':write'
+		\ 'name' : 'Write',
+		\ 'exec' : ':write'
 	\}
 
 	let s:child_b = {
@@ -49,13 +49,13 @@ else
 
 	" Folding nodes {{{1
 	let s:child_f_c = {
-		\ 'name'   : 'Open folding',
-		\ 'action' : ':normal zo'
+		\ 'name' : 'Open folding',
+		\ 'exec' : ':normal zo'
 	\}
 
 	let s:child_f_o = {
-		\ 'name'   : 'Close folding',
-		\ 'action' : ':normal zc'
+		\ 'name' : 'Close folding',
+		\ 'exec' : ':normal zc'
 	\}
 
 	let s:child_f = {
@@ -69,8 +69,8 @@ else
 
 	" File nodes {{{1
 	let s:child_F_c = {
-		\ 'name'   : 'vimrc',
-		\ 'action' : ':badd $MYVIMRC'
+		\ 'name' : 'vimrc',
+		\ 'exec' : ':badd $MYVIMRC'
 	\}
 
 	let s:child_F = {
@@ -83,13 +83,13 @@ else
 
 	" Help nodes {{{1
 	let s:child_h_h = {
-		\ 'name'        : 'Horizontal',
-		\ 'action-args' : ':help '
+		\ 'name'    : 'Horizontal',
+		\ 'keyfeed' : ':help '
 	\}
 
 	let s:child_h_v = {
-		\ 'name'        : 'Vertical',
-		\ 'action-args' : ':vert help '
+		\ 'name'    : 'Vertical',
+		\ 'keyfeed' : ':vert help '
 	\}
 
 	let s:child_h = {
@@ -101,24 +101,24 @@ else
 	\}
 	" }}}1
 
-	" Quit vim nodes {{{1
+	" Quit Vim nodes {{{1
 	let s:child_q_f = {
-		\ 'name'   : 'Force quit vim',
-		\ 'action' : ':qa!'
+		\ 'name' : 'Force quit Vim',
+		\ 'exec' : ':qa!'
 	\}
 
 	let s:child_q_q = {
-		\ 'name'   : 'Quit vim',
-		\ 'action' : ':qa'
+		\ 'name' : 'Quit Vim',
+		\ 'exec' : ':qa'
 	\}
 
 	let s:child_q_w = {
-		\ 'name'   : 'Write quit vim',
-		\ 'action' : ':wqa'
+		\ 'name' : 'Write quit Vim',
+		\ 'exec' : ':wqa'
 	\}
 
 	let s:child_q = {
-		\ 'name'     : 'Quit vim',
+		\ 'name'     : 'Quit Vim',
 		\ 'children' : {
 			\ 'f' : s:child_q_f,
 			\ 'q' : s:child_q_q,
@@ -129,13 +129,13 @@ else
 
 	" Window nodes {{{1
 	let s:child_w_q = {
-		\ 'name'   : 'Quit',
-		\ 'action' : ':quit'
+		\ 'name' : 'Quit',
+		\ 'exec' : ':quit'
 	\}
 
 	let s:child_w_w = {
-		\ 'name'   : 'Next in sequence',
-		\ 'action' : ':normal ^W^W'
+		\ 'name' : 'Next in sequence',
+		\ 'exec' : ':normal ^W^W'
 	\}
 
 	let s:child_w = {
