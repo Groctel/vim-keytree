@@ -38,7 +38,7 @@ BROWSING THE TREE                                    *keytree-browsing-the-tree*
 ==============================================================================
                                             *:Keytree*  *g:keytree#treenodes#root*
 Start browsing the tree with :Keytree. Press the shown keys to advance through
-the tree and run an action. Press |-| to return to the previos node and <Esc>
+the tree and run an action. Press <BS> to return to the previos node and <Esc>
 to exit without running any actions.
 
 Ideally, you should map a key to access the tree as quick as possible:

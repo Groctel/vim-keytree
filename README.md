@@ -84,7 +84,6 @@ With a little skill you can use Keytree as a choose your own adventure text game
 
 ## TODO list
 
-- [ ] Set global variables for keys.
 - [ ] Colored output.
 
 - [x] Document the tree structure.

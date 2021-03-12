@@ -89,7 +89,7 @@ function! keytree#Main () abort
 		if l:pressed_key == "\<Esc>"
 			let l:tree_info = keytree#_Exit(l:tree_info)
 
-		elseif l:pressed_key == "-"
+		elseif l:pressed_key == nr2char("\<BS>")
 			let l:tree_info = keytree#_Rewind(l:tree_info)
 
 		else
