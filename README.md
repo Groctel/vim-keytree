@@ -2,21 +2,37 @@
 
 **A universe of actions at your fingertips!**
 
-## What does keytree do?
+### Beta release!
+
+This plugin is in Beta stage.
+This means that it is fully usable but still needs some improvements.
+Please check the TODO list at the bottom of the document and open issues or pull requests.
+Other than that, please enjoy!
+
+**Since this is no longer in alpha stage every change made from now on will be backwards compatible**.
+
+## What does Keytree do?
 
 Do you know how SpaceVim lets you press `<Space>` to make a menu appear with lots of options at your disposition to navigate around?
 This plugin is a serious attempt to emulate that behaviour while making it extensible and simple to use.
 
-**This plugin is still in alpha stage:** Right now this is a rough draft of what keytree will become.
-Please be patient or check the TODO list and start pull request!
+## Installation
 
-## How to use keytree
+Use the plugin manager of your choice. I like [vim-plug](https://github.com/junegunn/vim-plug).
+
+```vim
+Plug 'Groctel/vim-keytree'
+```
+
+This plugin uses Neovim's window api, so the plugin doesn't work with Vim.
+
+## How to use Keytree
 
 ### Broswing the tree
 
 Start browsing the tree with `:Keytree`.
 Press the shown keys to advance through the tree and run an action.
-Press `-` to return to the previos node and `<Esc>` to exit without running any actions.
+Press `<BS>` to return to the previos node and `<Esc>` to exit without running any actions.
 
 Ideally, you should map a key to access the tree as quick as possible:
 
@@ -85,6 +101,9 @@ With a little skill you can use Keytree as a choose your own adventure text game
 ## TODO list
 
 - [ ] Colored output.
+- [ ] Add more keys (open issues with ideas!).
+- [ ] Horizontal sorting.
+- [ ] Fix `:normal` keyfeeds (probably need to return to the previous window before running).
 
 - [x] Document the tree structure.
 - [x] Tree editing interface.
